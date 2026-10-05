@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة الدكتور محسن للغة الإنجليزية A0 - الأكاديمية التفاعلية الشاملة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        .game-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .game-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(234, 179, 8, 0.4); }
+            50% { box-shadow: 0 0 30px rgba(234, 179, 8, 0.8); }
+        }
+        .pulse-glow { animation: pulse-glow 2s infinite; }
+        .drag-item { cursor: grab; }
+        .drag-item:active { cursor: grabbing; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950 min-h-screen text-white flex flex-col justify-between">
+
+    <header class="w-full bg-black/70 backdrop-blur-md border-b border-white/10 px-6 py-4 flex flex-wrap justify-between items-center shadow-2xl sticky top-0 z-40">
+        <div class="flex items-center space-x-3 space-x-reverse">
+            <span class="text-4xl animate-float">👨‍🏫🎓</span>
+            <div>
+                <h1 class="text-xl md:text-2xl font-black bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500 bg-clip-text text-transparent">منصة الدكتور محسن التعليمية - المستوى A0</h1>
+                <p class="text-xs text-purple-300">أكاديمية تدريس الإنجليزية الاحترافية والمبتكرة (المفردات، القواعد، التهجئة، التوصيل)</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4 space-x-reverse mt-2 sm:mt-0">
+            <div class="bg-purple-900/60 px-4 py-2 rounded-2xl border border-purple-500/40 flex items-center gap-2 shadow-inner">
+                <span class="text-yellow-300 font-bold">⭐ نقاط البطل:</span>
+                <span id="scoreDisplay" class="font-extrabold text-lg text-yellow-400">0</span>
+            </div>
+            <div class="bg-emerald-900/60 px-4 py-2 rounded-2xl border border-emerald-500/40 flex items-center gap-2 shadow-inner">
+                <span class="text-cyan-300 font-bold">🏆 المستوى:</span>
+                <span id="levelDisplay" class="font-extrabold text-lg text-cyan-300">مبتدئ A0 ممتاز</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-5xl flex-grow flex flex-col justify-center">
+        
+        <!-- Welcome Hub / Game Selection -->
+        <div id="welcomeScreen" class="bg-white/10 backdrop-blur-2xl p-8 rounded-3xl border border-white/20 shadow-2xl text-center space-y-6 pulse-glow">
+            <div class="inline-block p-4 bg-yellow-500/20 rounded-full text-yellow-400 text-5xl mb-2 animate-bounce">
+                🚀✨
+            </div>
+            <h2 class="text-3xl md:text-4xl font-black text-white">مرحباً بك في عالم إنجليزي A0 مع الدكتور محسن!</h2>
+            <p class="text-purple-200 text-base max-w-2xl mx-auto leading-relaxed">
+                هذه المنصة مخصصة لتدريبك على كل دروس ومفردات منهج الدكتور محسن بشكل ممتع واحترافي. اختر نوع اللعبة أو التدريب الذي تفضله الآن:
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 pt-4">
+                <button onclick="startSection('vocabFlash')" class="game-card bg-gradient-to-br from-emerald-600 to-teal-800 hover:from-emerald-500 hover:to-teal-700 p-6 rounded-2xl shadow-xl border border-emerald-400/30 text-center font-bold flex flex-col items-center gap-3 cursor-pointer">
+                    <span class="text-4xl">🔊📖</span>
+                    <span class="text-lg">1. بطاقات الكلمات والنطق الصوتي</span>
+                    <span class="text-xs text-emerald-200">استماع حقيقي لكل الكلمات والمثال</span>
+                </button>
+                
+                <button onclick="startSection('mcq')" class="game-card bg-gradient-to-br from-blue-600 to-indigo-800 hover:from-blue-500 hover:to-indigo-700 p-6 rounded-2xl shadow-xl border border-blue-400/30 text-center font-bold flex flex-col items-center gap-3 cursor-pointer">
+                    <span class="text-4xl">🎯✍️</span>
+                    <span class="text-lg">2. اختبار الاختيار من متعدد الشامل</span>
+                    <span class="text-xs text-blue-200">أسئلة غير متكررة ومنهجية مكثفة</span>
+                </button>
+
+                <button onclick="startSection('matching')" class="game-card bg-gradient-to-br from-amber-600 to-orange-800 hover:from-amber-500 hover:to-orange-700 p-6 rounded-2xl shadow-xl border border-amber-400/30 text-center font-bold flex flex-col items-center gap-3 cursor-pointer">
+                    <span class="text-4xl">🔗🧩</span>
+                    <span class="text-lg">3. لعبة توصيل الكلمات بمعانيها</span>
+                    <span class="text-xs text-amber-200">اربط الكلمة الإنجليزية بمعناها العربي</span>
+                </button>
+
+                <button onclick="startSection('spelling')" class="game-card bg-gradient-to-br from-rose-600 to-pink-800 hover:from-rose-500 hover:to-pink-700 p-6 rounded-2xl shadow-xl border border-rose-400/30 text-center font-bold flex flex-col items-center gap-3 cursor-pointer">
+                    <span class="text-4xl">🔤✍️</span>
+                    <span class="text-lg">4. تحدي تهجئة الكلمات Spelling</span>
+                    <span class="text-xs text-rose-200">اكتب الكلمات الإنجليزية بدقة تامة</span>
+                </button>
+
+                <button onclick="startSection('arabicMeaning')" class="game-card bg-gradient-to-br from-cyan-600 to-blue-900 hover:from-cyan-500 hover:to-blue-800 p-6 rounded-2xl shadow-xl border border-cyan-400/30 text-center font-bold flex flex-col items-center gap-3 cursor-pointer">
+                    <span class="text-4xl">🌐📝</span>
+                    <span class="text-lg">5. تكملة واكتشاف المعنى بالعربي</span>
+                    <span class="text-xs text-cyan-200">تدرب على الترجمة الدقيقة من الصور</span>
+                </button>
+
+                <button onclick="startSection('grammar')" class="game-card bg-gradient-to-br from-purple-600 to-fuchsia-800 hover:from-purple-500 hover:to-fuchsia-700 p-6 rounded-2xl shadow-xl border border-purple-400/30 text-center font-bold flex flex-col items-center gap-3 cursor-pointer">
+                    <span class="text-4xl">💡⚖️</span>
+                    <span class="text-lg">6. شرح وجرامر Active & Passive</span>
+                    <span class="text-xs text-purple-200">ألعاب القواعد وتحويل الجمل باحتراف</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Dynamic Game Arena Container -->
+        <div id="gameContainer" class="hidden bg-white/10 backdrop-blur-2xl p-8 rounded-3xl border border-white/20 shadow-2xl relative min-h-[450px] flex flex-col justify-between">
+            <button onclick="backToHome()" class="absolute top-4 left-4 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-1 shadow cursor-pointer">
+                <span>🔙</span> الرئيسية
+            </button>
+            <div id="gameContent" class="space-y-6 pt-10">
+                <!-- Injected dynamically via JavaScript -->
+            </div>
+        </div>
+
+        <!-- Custom Modal Box -->
+        <div id="customModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+            <div class="bg-slate-900 border border-purple-500/50 p-6 rounded-3xl max-w-md w-full shadow-2xl text-center space-y-4">
+                <div id="modalIcon" class="text-6xl animate-bounce">🎉</div>
+                <h3 id="modalTitle" class="text-2xl font-bold text-white">النتيجة الرائعة</h3>
+                <p id="modalMessage" class="text-purple-200 text-base"></p>
+                <button onclick="closeModal()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 py-3 rounded-xl font-bold transition shadow-lg cursor-pointer text-lg">حسناً، متابعة المغامرة</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 text-xs text-purple-300 border-t border-white/10 bg-black/50">
+        جميع الحقوق محفوظة © أكاديمية الدكتور محسن لتطوير وتعليم اللغة الإنجليزية 2026
+    </footer>
+
+    <script>
+        // Comprehensive Dataset covering all Dr. Mohsen's course items
+        const masterVocab = [
+            { word: "butterfly", meaning: "فراشة", hint: "حشرة ذات أجنحة ملونة جميلة", example: "A butterfly has wings and can fly." },
+            { word: "beetle", meaning: "خنفساء", hint: "حشرة قوية تسير على الأرض ولها غلاف صلب", example: "Beetles are heavy and strong." },
+            { word: "insects", meaning: "حشرات", hint: "كائنات صغيرة مثل النمل والذباب والزنابير", example: "Other animals eat insects." },
+            { word: "heavy", meaning: "ثقيل", hint: "عكس خفيف، وزنه كبير عند القياس", example: "An insect carrying a heavy object." },
+            { word: "dinosaur", meaning: "ديناصور", hint: "حيوان عملاق قديم منقرض", example: "It's a big, scary dinosaur." },
+            { word: "extinct", meaning: "منقرض", hint: "كائنات لم تعد موجودة في الحياة اليوم", example: "Dinosaurs are now extinct." },
+            { word: "furry", meaning: "ذات فراء", hint: "يغطي جسمها شعر أو فرو ناعم مثل الثعالب", example: "Some animals are furry." },
+            { word: "tortoise", meaning: "سلحفاة", hint: "حيوان بطيء ذو درقة صلبة يعيش قرب الشاطئ", example: "A tortoise is found in the beach." },
+            { word: "creatures", meaning: "مخلوقات", hint: "جميع الكائنات الحية الموجودة في الكون", example: "Insects and birds are all different kinds of creatures." },
+            { word: "quiet", meaning: "هادئ", hint: "لا يصدر صوتاً صاخباً وصانع للصمت", example: "Be quiet when you are near wild animals!" },
+            { word: "wild animals", meaning: "حيوانات برية", hint: "حيوانات تعيش في الغابات والبرية مثل النمور", example: "Tigers live in the wild." },
+            { word: "look like", meaning: "تشبه", hint: "أن يبدو الكائن مطابقاً لشيء آخر في الشكل", example: "Dinosaurs look like ancient creatures." },
+            { word: "wing", meaning: "جناح", hint: "عضو الطيران لدى الطيور والحشرات", example: "A butterfly has colorful wings." },
+            { word: "bones", meaning: "عظام", hint: "الهيكل العظمي الداخلي للكائنات", example: "Dinosaur bones are found in the ground." }
+        ];
+
+        // Expanded MCQ Bank (Non-repeating & Diverse)
+        const masterMCQ = [
+            {
+                question: "What is a butterfly according to Dr. Mohsen's course?",
+                options: ["An insect with colorful wings", "A wild dinosaur", "A furry creature", "A heavy stone"],
+                answer: 0,
+                explanation: "الفراشة (butterfly) هي حشرة ذات أجنحة ملونة ورائعة."
+            },
+            {
+                question: "Choose the correct English spelling for (خنفساء):",
+                options: ["beetle", "bitil", "betal", "beatle"],
+                answer: 0,
+                explanation: "التهجئة الصحيحة لـ خنفساء هي beetle."
+            },
+            {
+                question: "What does the word 'extinct' mean in Arabic?",
+                options: ["موجود بكثرة", "منقرض (غير موجود حالياً)", "سريع جداً", "ثقيل الوزن"],
+                answer: 1,
+                explanation: "كلمة extinct تعني منقرض تماماً مثل الديناصورات."
+            },
+            {
+                question: "Complete the sentence: 'Beetles are ____ and strong.'",
+                options: ["heavy", "extinct", "quiet", "furry"],
+                answer: 0,
+                explanation: "الخنافس قوية وثقيلة (heavy and strong)."
+            },
+            {
+                question: "Where do tigers live?",
+                options: ["In the house", "In the wild", "In the sky", "In the sea"],
+                answer: 1,
+                explanation: "النمور تعيش في البرية (Tigers live in the wild)."
+            },
+            {
+                question: "What should you be when you are near wild animals?",
+                options: ["noisy", "quiet", "fast", "hungry"],
+                answer: 1,
+                explanation: "يجب أن تكون هادئاً (quiet) عندما تقترب من الحيوانات البرية."
+            },
+            {
+                question: "Which animal is slow and has a hard shell near the beach?",
+                options: ["tortoise", "butterfly", "beetle", "dinosaur"],
+                answer: 0,
+                explanation: "السلحفاة (tortoise) بطيئة وتوجد قرب الشاطئ."
+            },
+            {
+                question: "What do dinosaur bones tell us about?",
+                options: ["Extinct animals", "Flying insects", "House pets", "Colorful flowers"],
+                answer: 0,
+                explanation: "عظام الديناصورات تخبرنا عن الحيوانات المنقرضة (extinct animals)."
+            },
+            {
+                question: "What does 'furry' mean in Arabic?",
+                options: ["ذات فراء وشعر", "عديم الحين", "أملس تماماً", "مائي"],
+                answer: 0,
+                explanation: "كلمة furry تعني ذات فراء مثل الثعالب."
+            }
+        ];
+
+        // Grammar Steps and Interactive Challenges
+        const grammarGameSteps = [
+            {
+                title: "1. قاعدة المبني للمعلوم (Active Voice)",
+                desc: "في جملة المبنى للمعلوم، نبدأ بـ **الفاعل (Subject)** الذي يقوم بالفعل مباشرة.",
+                example: "🔹 **Beetles** eat **insects**. (الخنافس تأكل الحشرات)",
+                question: "في جملة (People don't see wild animals)، من هو الفاعل (Subject) الذي يقوم بالفعل؟",
+                options: ["wild animals", "People (الناس)", "don't see", "house"],
+                answer: 1,
+                explanation: "الناس (People) هم الفاعل الذي يقوم بفعل الرؤية في جملة المبني للمعلوم."
+            },
+            {
+                title: "2. قاعدة المبني للمجهول (Passive Voice)",
+                desc: "في المبنى للمجهول، نبدأ بـ **المفعول به** لأن التركيز يكون على **ما تم فعله** وليس من قام به!",
+                example: "🔹 **Insects** are eaten by beetles. (تُؤكل الحشرات من قبل الخنافس)",
+                question: "حول الجملة (People don't see wild animals) إلى المبني للمجهول:",
+                options: [
+                    "Wild animals aren't seen by people.",
+                    "People eat wild animals.",
+                    "Beetles are eaten."
+                ],
+                answer: 0,
+                explanation: "عند التحويل للمجهول نبدأ بالمفعول به (Wild animals) ونستخدم (aren't seen by people)."
+            },
+            {
+                title: "3. تطبيق قواعد الأزمان (Active vs Passive)",
+                desc: "لاحظ الفرق بين التركيز على الفاعل (Active) والتركيز على المفعول به (Passive) في منهج الدكتور محسن.",
+                example: "🔹 Do we find dinosaur bones? (Active) / Are dinosaur bones found on the Moon? (Passive)",
+                question: "الجمل في منهج الدكتور محسن تركز على: (The sentences focus on...)",
+                options: [
+                    "who does the actions / what action is done",
+                    "only past tense",
+                    "only future tense"
+                ],
+                answer: 0,
+                explanation: "الجمل تركز على من يقوم بالأفعال وما يتم فعله (who does the actions / what action is done)."
+            },
+            {
+                title: "4. اختبار زمن الجمل",
+                desc: "هل جمل منهج A0 تعبر عن الحاضر البسيط (Present Simple)؟",
+                example: "🔹 Tigers live in the wild. (Present Simple)",
+                question: "The sentences in the chart are about the...",
+                options: ["past / present / future", "only future", "only past"],
+                answer: 0,
+                explanation: "الجمل تعبر عن حقائق في الحاضر والمضارع البسيط."
+            }
+        ];
+
+        let currentScore = 0;
+        let activeSection = '';
+        let currentIndex = 0;
+
+        // Text-to-Speech Pronunciation Engine
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function updateScore(points) {
+            currentScore += points;
+            document.getElementById('scoreDisplay').innerText = currentScore;
+        }
+
+        function showModal(title, message, icon = '✅') {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerText = message;
+            document.getElementById('modalIcon').innerText = icon;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        function startSection(section) {
+            activeSection = section;
+            currentIndex = 0;
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('gameContainer').classList.remove('hidden');
+            loadGameStep();
+        }
+
+        function backToHome() {
+            document.getElementById('gameContainer').classList.add('hidden');
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+        }
+
+        function loadGameStep() {
+            const container = document.getElementById('gameContent');
+            container.innerHTML = '';
+
+            if (activeSection === 'vocabFlash') {
+                if (currentIndex >= masterVocab.length) {
+                    container.innerHTML = `
+                        <div class="text-center space-y-6 py-8">
+                            <div class="text-6xl animate-bounce">🏆</div>
+                            <h3 class="text-2xl font-bold text-yellow-300">أحسنت يا بطل! أنهيت بطاقات الكلمات والنطق الصوتي بنجاح!</h3>
+                            <button onclick="backToHome()" class="bg-gradient-to-r from-emerald-500 to-teal-600 px-8 py-3 rounded-2xl font-bold shadow-lg cursor-pointer">العودة للرئيسية</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let item = masterVocab[currentIndex];
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between text-sm text-purple-300">
+                            <span>الكلمة ${currentIndex + 1} من ${masterVocab.length}</span>
+                            <span>أكاديمية د. محسن - النطق والمفردات</span>
+                        </div>
+                        <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-center space-y-6 shadow-inner">
+                            <div class="flex justify-center items-center gap-4">
+                                <h3 class="text-5xl font-black tracking-wider text-yellow-300">${item.word}</h3>
+                                <button onclick="speakText('${item.word}')" class="bg-yellow-500/20 hover:bg-yellow-500/40 p-4 rounded-full text-yellow-300 transition shadow cursor-pointer text-2xl" title="استمع للنطق الأصلي">
+                                    🔊
+                                </button>
+                            </div>
+                            <div class="text-2xl font-bold text-emerald-300 bg-emerald-950/50 py-2 px-6 rounded-2xl inline-block border border-emerald-500/30">
+                                المعنى بالعربي: ${item.meaning}
+                            </div>
+                            <p class="text-purple-200 text-base">تلميح: ${item.hint}</p>
+                            <div class="bg-purple-950/70 p-4 rounded-2xl border border-purple-500/30 flex justify-between items-center max-w-lg mx-auto">
+                                <span class="text-cyan-200 italic">مثال: "${item.example}"</span>
+                                <button onclick="speakText('${item.example}')" class="bg-purple-600/30 hover:bg-purple-600/50 p-2 rounded-full text-cyan-300 transition cursor-pointer">🔊</button>
+                            </div>
+                        </div>
+                        <div class="flex justify-between">
+                            <button onclick="currentIndex++; loadGameStep();" class="w-full bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 py-4 rounded-2xl font-bold transition shadow-lg text-lg cursor-pointer">الكلمة التالية ➡️</button>
+                        </div>
+                    </div>
+                `;
+
+            } else if (activeSection === 'mcq') {
+                if (currentIndex >= masterMCQ.length) {
+                    container.innerHTML = `
+                        <div class="text-center space-y-6 py-8">
+                            <div class="text-6xl animate-bounce">🌟</div>
+                            <h3 class="text-2xl font-bold text-yellow-300">رائع جداً! أكملت اختبار الاختيار من متعدد بنجاح تام!</h3>
+                            <button onclick="backToHome()" class="bg-gradient-to-r from-blue-500 to-indigo-600 px-8 py-3 rounded-2xl font-bold shadow-lg cursor-pointer">العودة للرئيسية</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let item = masterMCQ[currentIndex];
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between text-sm text-purple-300">
+                            <span>السؤال ${currentIndex + 1} من ${masterMCQ.length}</span>
+                            <span>اختبار الاختيار من متعدد - د. محسن</span>
+                        </div>
+                        <div class="bg-white/5 p-6 rounded-3xl border border-white/10 text-center space-y-4">
+                            <div class="flex justify-center items-center gap-3">
+                                <h3 class="text-xl md:text-2xl font-bold text-cyan-200">${item.question}</h3>
+                                <button onclick="speakText('${item.question}')" class="bg-blue-500/20 hover:bg-blue-500/40 p-3 rounded-full text-cyan-300 transition cursor-pointer">🔊</button>
+                            </div>
+                        </div>
+                        <div id="mcqOptions" class="grid grid-cols-1 gap-3 pt-2"></div>
+                    </div>
+                `;
+
+                let optContainer = document.getElementById('mcqOptions');
+                item.options.forEach((opt, idx) => {
+                    let btn = document.createElement('button');
+                    btn.className = "bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-2xl font-medium transition text-right flex items-center justify-between cursor-pointer shadow text-lg";
+                    btn.innerHTML = `<span>${opt}</span> <span class="text-xs bg-purple-500/30 px-3 py-1 rounded-xl">خيار ${idx + 1}</span>`;
+                    btn.onclick = () => {
+                        if (idx === item.answer) {
+                            updateScore(20);
+                            showModal('إجابة موفقة وصحيحة! 👏', item.explanation, '✅');
+                            currentIndex++;
+                            loadGameStep();
+                        } else {
+                            showModal('تنبيه ذكي', 'الإجابة غير صحيحة، حاول التركيز واختيار الإجابة الدقيقة.', '❌');
+                        }
+                    };
+                    optContainer.appendChild(btn);
+                });
+
+            } else if (activeSection === 'matching') {
+                // Matching Game Exercise
+                if (currentIndex >= 3) {
+                    container.innerHTML = `
+                        <div class="text-center space-y-6 py-8">
+                            <div class="text-6xl animate-bounce">🧩👑</div>
+                            <h3 class="text-2xl font-bold text-yellow-300">أبدعت في لعبة التوصيل وربط الكلمات!</h3>
+                            <button onclick="backToHome()" class="bg-gradient-to-r from-amber-500 to-orange-600 px-8 py-3 rounded-2xl font-bold shadow-lg cursor-pointer">العودة للرئيسية</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Pick 4 random items for matching round
+                let subset = [...masterVocab].sort(() => 0.5 - Math.random()).slice(0, 4);
+                let shuffledMeanings = [...subset].sort(() => 0.5 - Math.random());
+
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between text-sm text-purple-300">
+                            <span>جولة التوصيل ${currentIndex + 1} من 3</span>
+                            <span>لعبة توصيل الكلمات بمعانيها - د. محسن</span>
+                        </div>
+                        <div class="text-center bg-white/5 p-4 rounded-2xl border border-white/10">
+                            <p class="text-base text-cyan-200 font-bold">اضغط على الكلمة الإنجليزية ثم اضغط على المعنى العربي الصحيح لها!</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                            <div id="englishCol" class="space-y-3">
+                                <h4 class="font-bold text-yellow-300 text-center mb-2">الكلمات الإنجليزية (English)</h4>
+                                ${subset.map(item => `<button onclick="selectEnglishWord('${item.word}', '${item.meaning}', this)" class="w-full bg-slate-900 hover:bg-slate-800 border border-yellow-500/40 p-4 rounded-xl font-bold text-center text-yellow-200 transition shadow cursor-pointer eng-btn" data-word="${item.word}" data-meaning="${item.meaning}">${item.word} 🔊</button>`).join('')}
+                            </div>
+                            <div id="arabicCol" class="space-y-3">
+                                <h4 class="font-bold text-emerald-300 text-center mb-2">المعاني العربية (Arabic)</h4>
+                                ${shuffledMeanings.map(item => `<button onclick="selectArabicMeaning('${item.meaning}', this)" class="w-full bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 p-4 rounded-xl font-bold text-center text-emerald-200 transition shadow cursor-pointer arab-btn" data-meaning="${item.meaning}">${item.meaning}</button>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                window.selectedMatchWord = null;
+                window.selectedMatchMeaning = null;
+                window.matchedCount = 0;
+                window.totalMatchesNeeded = subset.length;
+
+            } else if (activeSection === 'spelling') {
+                if (currentIndex >= masterVocab.length) {
+                    container.innerHTML = `
+                        <div class="text-center space-y-6 py-8">
+                            <div class="text-6xl animate-bounce">👑</div>
+                            <h3 class="text-2xl font-bold text-yellow-300">أنت بطل التهجئة الإنجليزية الحقيقي بدون منازع!</h3>
+                            <button onclick="backToHome()" class="bg-gradient-to-r from-rose-500 to-pink-600 px-8 py-3 rounded-2xl font-bold shadow-lg cursor-pointer">العودة للرئيسية</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let item = masterVocab[currentIndex];
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between text-sm text-purple-300">
+                            <span>السؤال ${currentIndex + 1} من ${masterVocab.length}</span>
+                            <span>تحدي التهجئة (Spelling Challenge) - د. محسن</span>
+                        </div>
+                        <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-center space-y-4 shadow-inner">
+                            <p class="text-base text-purple-200">اكتب بالإنجليزية الكلمة المعبرة عن المعنى التالي:</p>
+                            <h3 class="text-4xl font-black text-yellow-300">${item.meaning}</h3>
+                            <div class="flex justify-center items-center gap-3">
+                                <p class="text-sm text-cyan-300 font-bold">الحرف الأول: ${item.word.charAt(0).toUpperCase()} _ _ ... (${item.word.length} حروف)</p>
+                                <button onclick="speakText('${item.word}')" class="bg-rose-500/20 hover:bg-rose-500/40 p-3 rounded-full text-rose-300 transition cursor-pointer">🔊 استمع للكلمة</button>
+                            </div>
+                        </div>
+                        <div class="space-y-4 pt-2 max-w-md mx-auto">
+                            <input type="text" id="spellingInput" placeholder="اكتب الكلمة هنا بالإنجليزية..." class="w-full bg-slate-900/90 border border-white/20 p-4 rounded-2xl text-center text-2xl font-bold text-white focus:outline-none focus:border-yellow-400 shadow-inner">
+                            <button onclick="checkSpelling('${item.word}')" class="w-full bg-gradient-to-r from-rose-600 to-pink-700 hover:from-rose-500 hover:to-pink-600 py-4 rounded-2xl font-bold transition shadow-lg text-lg cursor-pointer">تحقق من التهجئة ✍️</button>
+                        </div>
+                    </div>
+                `;
+
+            } else if (activeSection === 'arabicMeaning') {
+                if (currentIndex >= masterVocab.length) {
+                    container.innerHTML = `
+                        <div class="text-center space-y-6 py-8">
+                            <div class="text-6xl animate-bounce">🌟</div>
+                            <h3 class="text-2xl font-bold text-yellow-300">أتممت تدريبات اكتشاف المعنى بالعربي بكفاءة تامة!</h3>
+                            <button onclick="backToHome()" class="bg-gradient-to-r from-cyan-500 to-blue-600 px-8 py-3 rounded-2xl font-bold shadow-lg cursor-pointer">العودة للرئيسية</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let item = masterVocab[currentIndex];
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between text-sm text-purple-300">
+                            <span>السؤال ${currentIndex + 1} من ${masterVocab.length}</span>
+                            <span>تكملة واكتشاف المعنى - د. محسن</span>
+                        </div>
+                        <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-center space-y-4 shadow-inner">
+                            <div class="flex justify-center items-center gap-3">
+                                <h3 class="text-4xl font-black text-yellow-300">${item.word}</h3>
+                                <button onclick="speakText('${item.word}')" class="bg-cyan-500/20 hover:bg-cyan-500/40 p-3 rounded-full text-cyan-300 transition cursor-pointer">🔊</button>
+                            </div>
+                            <p class="text-purple-200">اختر المعنى العربي الصحيح للكلمة السابقة:</p>
+                        </div>
+                        <div id="arabicMeaningOptions" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2"></div>
+                    </div>
+                `;
+
+                // Generate 3 wrong + 1 correct
+                let options = [item.meaning];
+                while (options.length < 4) {
+                    let randItem = masterVocab[Math.floor(Math.random() * masterVocab.length)].meaning;
+                    if (!options.includes(randItem)) options.push(randItem);
+                }
+                options.sort(() => Math.random() - 0.5);
+
+                let optContainer = document.getElementById('arabicMeaningOptions');
+                options.forEach(opt => {
+                    let btn = document.createElement('button');
+                    btn.className = "bg-white/10 hover:bg-white/20 border border-white/20 p-5 rounded-2xl font-bold transition text-center text-xl cursor-pointer shadow";
+                    btn.innerText = opt;
+                    btn.onclick = () => {
+                        if (opt === item.meaning) {
+                            updateScore(20);
+                            speakText(item.word);
+                            showModal('إجابة صحيحة ومبهرة! 🎯', `ممتاز! (${item.word}) تعني فعلاً (${item.meaning}).`, '🎉');
+                            currentIndex++;
+                            loadGameStep();
+                        } else {
+                            showModal('إجابة غير صحيحة ❌', 'حاول مرة أخرى وتذكر معاني الكلمات من الصور.', '💡');
+                        }
+                    };
+                    optContainer.appendChild(btn);
+                });
+
+            } else if (activeSection === 'grammar') {
+                if (currentIndex >= grammarGameSteps.length) {
+                    container.innerHTML = `
+                        <div class="text-center space-y-6 py-8">
+                            <div class="text-6xl animate-bounce">🎓🚀</div>
+                            <h3 class="text-2xl font-bold text-yellow-300">أنت أستاذ قواعد Active & Passive بامتياز! أنهيت كل التدريبات!</h3>
+                            <button onclick="backToHome()" class="bg-gradient-to-r from-purple-500 to-fuchsia-600 px-8 py-3 rounded-2xl font-bold shadow-lg cursor-pointer">العودة للرئيسية</button>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let step = grammarGameSteps[currentIndex];
+                container.innerHTML = `
+                    <div class="space-y-6">
+                        <div class="flex justify-between text-sm text-purple-300">
+                            <span>شرح وتدريب الجرامر ${currentIndex + 1} من ${grammarGameSteps.length}</span>
+                            <span>قواعد Active & Passive - د. محسن</span>
+                        </div>
+                        <div class="bg-white/5 p-6 rounded-3xl border border-white/10 space-y-4 shadow-inner">
+                            <h3 class="text-2xl font-bold text-yellow-300">${step.title}</h3>
+                            <p class="text-purple-200 text-base leading-relaxed">${step.desc}</p>
+                            <div class="bg-purple-950/70 p-4 rounded-2xl border border-purple-500/30 text-cyan-200 text-base flex justify-between items-center">
+                                <span>${step.example}</span>
+                                <button onclick="speakText('${step.example.replace(/[*_]/g, '')}')" class="bg-purple-600/30 hover:bg-purple-600/50 p-2 rounded-full text-cyan-300 transition cursor-pointer">🔊</button>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/60 p-6 rounded-3xl border border-white/10 space-y-4">
+                            <p class="font-bold text-base text-white">${step.question}</p>
+                            <div id="grammarOptions" class="grid grid-cols-1 gap-3"></div>
+                        </div>
+                    </div>
+                `;
+
+                let optContainer = document.getElementById('grammarOptions');
+                step.options.forEach((opt, idx) => {
+                    let btn = document.createElement('button');
+                    btn.className = "bg-white/10 hover:bg-white/20 border border-white/20 p-4 rounded-2xl text-base font-medium transition text-right cursor-pointer shadow";
+                    btn.innerText = opt;
+                    btn.onclick = () => {
+                        if (idx === step.answer) {
+                            updateScore(25);
+                            showModal('إجابة ذكية وممتازة! 🌟', step.explanation, '🚀');
+                            currentIndex++;
+                            loadGameStep();
+                        } else {
+                            showModal('تنبيه', 'راجع شرح القاعدة بالأعلى ثم حاول مجدداً بدقة.', '❌');
+                        }
+                    };
+                    optContainer.appendChild(btn);
+                });
+            }
+        }
+
+        // Matching game helper functions
+        let currentSelectedWordElem = null;
+        let matchedPairs = 0;
+
+        function selectEnglishWord(word, meaning, btnElem) {
+            document.querySelectorAll('.eng-btn').forEach(b => b.classList.remove('border-yellow-400', 'bg-yellow-950'));
+            btnElem.classList.add('border-yellow-400', 'bg-yellow-950');
+            window.selectedMatchWord = { word, meaning };
+            currentSelectedWordElem = btnElem;
+            speakText(word);
+            checkMatchCompletion();
+        }
+
+        function selectArabicMeaning(meaning, btnElem) {
+            if (!window.selectedMatchWord) {
+                showModal('تنبيه', 'من فضلك اختر الكلمة الإنجليزية أولاً!', '⚠️️');
+                return;
+            }
+
+            if (window.selectedMatchWord.meaning === meaning) {
+                updateScore(15);
+                showModal('توصيل صحيح! 🎯', `ممتاز! (${window.selectedMatchWord.word}) تطابق (${meaning}).`, '🎉');
+                btnElem.classList.add('bg-emerald-950', 'border-emerald-400', 'opacity-50');
+                btnElem.disabled = true;
+                if (currentSelectedWordElem) {
+                    currentSelectedWordElem.classList.add('opacity-50');
+                    currentSelectedWordElem.disabled = true;
+                }
+                window.selectedMatchWord = null;
+                matchedPairs++;
+                if (matchedPairs >= window.totalMatchesNeeded) {
+                    setTimeout(() => {
+                        currentIndex++;
+                        loadGameStep();
+                    }, 1200);
+                }
+            } else {
+                showModal('خطأ في التوصيل ❌', 'هذا المعنى لا يطابق الكلمة المحددة، حاول مرة أخرى.', '💡');
+            }
+        }
+
+        function checkSpelling(correctWord) {
+            let userVal = document.getElementById('spellingInput').value.trim().toLowerCase();
+            if (userVal === correctWord.toLowerCase()) {
+                updateScore(25);
+                speakText(correctWord);
+                showModal('تهجئة صحيحة تماماً! 🎯', `رائع جداً! كلمة (${correctWord}) صحيحة بنسبة 100%.`, '🏆');
+                currentIndex++;
+                loadGameStep();
+            } else {
+                showModal('خطأ بسيط في التهجئة', `الكلمة الصحيحة هي: ${correctWord}. حاول مجدداً في التحدي القادم!`, '✍️');
+            }
+        }
+
+        window.onload = function() {
+            console.log("Dr. Mohsen English A0 Academy Loaded Successfully.");
+        };
+    </script>
+</body>
+</html>
